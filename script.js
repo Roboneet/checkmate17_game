@@ -110,10 +110,10 @@ $(document).ready(function(){
 		var vertical_middle = (player_rect.top + player_rect.bottom)/2;
 		var horizontal_middle = (player_rect.left + player_rect.right)/2;
 
-		var top = container_rect.top - vertical_middle,
-		left = container_rect.left - horizontal_middle,
-		right = horizontal_middle - container_rect.right,
-		bottom =  vertical_middle -  container_rect.bottom;
+		var top = Math.abs(container_rect.top - vertical_middle),
+		left = Math.abs(container_rect.left - horizontal_middle),
+		right = Math.abs(horizontal_middle - container_rect.right),
+		bottom =  Math.abs(vertical_middle -  container_rect.bottom);
 
 		return Math.sqrt(Math.pow(Math.min(left, right), 2) +  Math.pow(Math.min(top, bottom),2));
 	}
