@@ -1,13 +1,24 @@
 // add id = player_girl to girl's g tag
 $(document).ready(function(){
 
+	$('body').append('<div id="dev_info"><h1>#prototype</h1><span></span></div>');
+
 	//fancy colors
-	$('body').css('backgroundColor', '#f7d16e')
+	$('body').css('backgroundColor', 'rgba(210, 186, 2, 0.14)');
+	$('body').css('fontFamily', 'arial, verdana');
 	
 	var svg = $('svg')
 	var player_girl = $('#player_girl');
 	var player_boy;
 	var player = player_girl;
+
+	/*****
+	*
+	*  Walking on the road
+	*
+	******/
+
+
 	var roads = $('.cls-3')
 	var inital_pos = [-250, 20]
 	// initial position
@@ -27,8 +38,8 @@ $(document).ready(function(){
 	$(document).keydown(function(e){
 		player_props.top = 0;
 		player_props.left = 0;
-		
-		if(e.keyCode == 38){
+		if(e.keycode>40 || e.keyCode<37)return;
+		else if(e.keyCode == 38){
 			player_props.top = -(player_props.step);
 		}else if(e.keyCode == 40){
 			player_props.top = player_props.step;
@@ -84,4 +95,42 @@ $(document).ready(function(){
 	
 		return (cond_right && cond_left && cond_top && cond_bottom)
 	}
+
+	/*****
+	*
+	*	Nearest building
+	*
+	*****/
+	var buildings = [$('#Meera'), $('#BalikaVidhya'), $('#Budh'), $('#Ram'), $('#ClockTower'), $('#malA'), $('#BirlaMemorial'), $('#Vyas'), $('#Shankar'), $('#Gandhi'), $('#Krishna'), $('#temple'), $('#Bhagirath'), $('#vishwa_karma'), $('#_Group_24'), $('#gymG'), $('#ANC'), $('#FD3'), $('#FD2'), $('#Rotunda'), $('#NAB')];
+
+	function nearest_distance(player, container){
+		var player_rect = player.getBoundingClientRect();
+		var container_rect = container.getBoundingClientRect();
+
+		var vertical_middle = (player_rect.top + player_rect.bottom)/2;
+		var horizontal_middle = (player_rect.left + player_rect.right)/2;
+
+		var top = container_rect.top - vertical_middle,
+		left = container_rect.left - horizontal_middle,
+		right = horizontal_middle - container_rect.right,
+		bottom =  vertical_middle -  container_rect.bottom;
+
+		return Math.sqrt(Math.pow(Math.min(left, right), 2) +  Math.pow(Math.min(top, bottom),2));
+	}
+
+	var display_buildings = setInterval(function(){
+		var distances = [];
+		buildings.forEach(function(ele, ind){
+			// console.log(nearest_distance(player[0], ele[0]).toString());
+			// console.log(ele)
+			distances.push([ele.attr('id'), nearest_distance(player[0], ele[0]).toString()]);
+		});
+		// console.log(distances)
+		var sorted = distances.sort(function(a, b){
+			return parseInt(a[1]) - parseInt(b[1]);
+		})
+		$('#dev_info span').text(sorted[0][0]);
+
+	}, 1000)
+
 });
