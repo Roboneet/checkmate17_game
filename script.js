@@ -2,6 +2,8 @@
 $(document).ready(function(){
 
 	$('body').append('<div id="dev_info"><h1>#prototype</h1><span></span></div>');
+	$('body').append('<div id="building_names"></div>');
+	$('#building_names').css({'position': 'absolute','top': 0, 'left':0, 'width': 'fit-content', 'background': 'rgba(0,0,0,0.2)', 'color': '#eee', 'fontSize': '10px', 'padding': '2px', 'borderRadius': '6px'});
 
 	//fancy colors
 	$('body').css('backgroundColor', 'rgba(210, 186, 2, 0.14)');
@@ -130,7 +132,18 @@ $(document).ready(function(){
 			return parseInt(a[1]) - parseInt(b[1]);
 		})
 		$('#dev_info span').text(sorted[0][0]);
+		if($('#building_names').text() != sorted[0][0]){
+			$('#building_names').fadeOut(200);
+			var k = setTimeout(function(){
+				$('#building_names').text(sorted[0][0]);
+				$('#building_names').css({'top': ($('#'+ sorted[0][0]).offset().top + $('#'+ sorted[0][0])[0].getBoundingClientRect().height/2 - $('#building_names').height()/2), 'left': ($('#'+ sorted[0][0]).offset().left + $('#'+ sorted[0][0])[0].getBoundingClientRect().width/2 - $('#building_names').width()/2)});
+				$('#building_names').fadeIn();
+			},200);
 
+		}
+		
+
+			
 	}, 1000)
 
 });
