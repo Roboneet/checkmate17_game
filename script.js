@@ -1,7 +1,10 @@
 // add id = player_girl to girl's g tag
 $(document).ready(function(){
 
+	// developer_info
 	$('body').append('<div id="dev_info"><h1>#prototype</h1><span></span></div>');
+	
+	// names on buildings
 	$('body').append('<div id="building_names"></div>');
 	$('#building_names').css({'position': 'absolute','top': 0, 'left':0, 'width': 'fit-content', 'background': 'rgba(0,0,0,0.2)', 'color': '#eee', 'fontSize': '10px', 'padding': '2px', 'borderRadius': '6px'});
 
@@ -13,6 +16,7 @@ $(document).ready(function(){
 	var player_girl = $('#player_girl');
 	var player_boy;
 	var player = player_girl;
+	window.playground = svg;
 
 	/*****
 	*
@@ -40,7 +44,8 @@ $(document).ready(function(){
 	$(document).keydown(function(e){
 		player_props.top = 0;
 		player_props.left = 0;
-		if(e.keycode>40 || e.keyCode<37)return;
+		// console.log(e.keyCode);
+		if((e.keyCode>40 || e.keyCode<37 ) && e.keyCode!=32)return;
 		else if(e.keyCode == 38){
 			player_props.top = -(player_props.step);
 		}else if(e.keyCode == 40){
@@ -49,6 +54,8 @@ $(document).ready(function(){
 			player_props.left = player_props.step;
 		}else if(e.keyCode == 37){
 			player_props.left = -(player_props.step);
+		}else if(e.keyCode == 32){
+			return window.lightbox();
 		}
 		render(player_props.top,player_props.left);
 	})
@@ -131,19 +138,22 @@ $(document).ready(function(){
 		var sorted = distances.sort(function(a, b){
 			return parseInt(a[1]) - parseInt(b[1]);
 		})
+		var current = sorted[0][0];
+		window.selected = current;
+
 		$('#dev_info span').text(sorted[0][0]);
-		if($('#building_names').text() != sorted[0][0]){
+		
+		if($('#building_names').text() != current){
 			$('#building_names').fadeOut(200);
 			var k = setTimeout(function(){
-				$('#building_names').text(sorted[0][0]);
+				$('#building_names').text(current);
 				$('#building_names').css({'top': ($('#'+ sorted[0][0]).offset().top + $('#'+ sorted[0][0])[0].getBoundingClientRect().height/2 - $('#building_names').height()/2), 'left': ($('#'+ sorted[0][0]).offset().left + $('#'+ sorted[0][0])[0].getBoundingClientRect().width/2 - $('#building_names').width()/2)});
 				$('#building_names').fadeIn();
 			},200);
 
 		}
-		
-
 			
-	}, 1000)
+	}, 1000);
+
 
 });

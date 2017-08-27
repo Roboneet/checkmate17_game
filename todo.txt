@@ -1,1 +1,2 @@
 // Improve buiding identification (NAB , clocktower) : DONE , yay!
+_GROUP_24 : LIbrary, give id to player
